@@ -1,6 +1,4 @@
 class Validation {
-  constructor() {}
-
   isValidUserName = (userName) => {
     return userName.value !== '' && userName.value.length > 4;
   };
@@ -13,6 +11,6 @@ class Validation {
     return password.value !== '' && password.value.length >= 6;
   };
   isValidConfirmPassword = (password, confirmPassword) => {
-    return password.value === confirmPassword.value;
+    return password.value === confirmPassword.value && confirmPassword.value !== '';
   };
 }

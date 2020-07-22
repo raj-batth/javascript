@@ -1,37 +1,45 @@
 // ! Note hoisting arrow function need to be declared before using it
-
 class App {
   constructor() {
     this.ui = new UI();
     this.validation = new Validation();
   }
   registerUserSubmitted = (e) => {
+    // this.userNameKeyup();
+    // this.emailKeyup();
+    // this.passwordKeyup();
+    // this.confirmPasswordKeyup();
     alert('You Have Registered Successfully !')
     window.reload();
     e.preventDefault();
   };
-  userNameKeyup = (e) => {
-    this.validInvalidToggleService(this.validation.isValidUserName(e.target),'Please Enter Valid UserName', e, 'feedback-user_name');
-    e.preventDefault();
+
+  userNameKeyup = () => {
+    this.validInvalidToggleService(this.validation.isValidUserName(this.ui.userName),'Please Enter Valid UserName', this.ui.userName, 'feedback-user_name');
   };
-  emailKeyup = (e) => {
-    this.validInvalidToggleService(this.validation.isValidEmail(e.target),'Please Enter Valid Email', e, 'feedback-email');
-    e.preventDefault();
+
+
+  emailKeyup = () => {
+    this.validInvalidToggleService(this.validation.isValidEmail(this.ui.email),'Please Enter Valid Email', this.ui.email, 'feedback-email');
   };
-  passwordKeyup = (e) => {
-    this.validInvalidToggleService(this.validation.isValidPassword(e.target),'Password Must Be 6 Or More Chars', e, 'feedback-password');
-    e.preventDefault();
+
+  passwordKeyup = () => {
+    this.validInvalidToggleService(this.validation.isValidPassword(this.ui.password),'Password Must Be 6 Or More Chars', this.ui.password, 'feedback-password');
+    // ? To check confirm password, while changing password 
+    this.validInvalidToggleService(this.validation.isValidConfirmPassword(this.ui.password,this.ui.confirmPassword),'Password Does Not Match', this.ui.confirmPassword, 'feedback-confirm_password')
   };
-  confirmPasswordKeyup = (e) => {
-    this.validInvalidToggleService(this.validation.isValidConfirmPassword(this.ui.password, e.target),'Password Does Not Match', e, 'feedback-confirm_password')
-    e.preventDefault();
+
+  confirmPasswordKeyup = () => {
+    this.validInvalidToggleService(this.validation.isValidConfirmPassword(this.ui.password,this.ui.confirmPassword),'Password Does Not Match', this.ui.confirmPassword, 'feedback-confirm_password')
   };
-  validInvalidToggleService = (validation, errMessage, e, feedBackClass) =>{
+
+  validInvalidToggleService = (validation, errMessage, targetField ,feedBackClass) => {
     if (validation) {
-      this.ui.addIsValidClass(e.target);
+      // console.log(e);
+      this.ui.addIsValidClass(targetField);
       this.ui.addFeedback('',feedBackClass , 'valid-feedback');
     } else {
-      this.ui.addIsInValidClass(e.target);
+      this.ui.addIsInValidClass(targetField);
       this.ui.addFeedback(errMessage, feedBackClass, 'invalid-feedback');
     }
     this.ui.disabledToggle();
@@ -41,13 +49,9 @@ class App {
     this.ui.userName.addEventListener('keyup', this.userNameKeyup);
     this.ui.email.addEventListener('keyup', this.emailKeyup);
     this.ui.password.addEventListener('keyup', this.passwordKeyup);
-    this.ui.confirmPassword.addEventListener(
-      'keyup',
-      this.confirmPasswordKeyup
-    );
+    this.ui.confirmPassword.addEventListener('keyup', this.confirmPasswordKeyup);
   };
 }
-
+ 
 const app = new App();
-
 app.init();
